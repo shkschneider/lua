@@ -52,3 +52,20 @@ Links
 
 - https://love2d.org
 - https://github.com/love2d-community/awesome-love2d
+
+flock
+=====
+
+> A boid prototype with Love(2D)!
+
+The starting point of my Lua experiments.
+
+```bash
+cd ./flock/
+love .
+```
+
+Links
+-----
+
+- https://opengameart.org
