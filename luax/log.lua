@@ -1,6 +1,6 @@
 local Log = {}
 
-Log.FILENAME = Path.basename(Path.root or "log") .. ".log"
+Log.FILENAME = luax.Path.basename(luax.Path.root or "log") .. ".log"
 Log.FILE = io.open(Log.FILENAME, "w+")
 
 function Log.close()

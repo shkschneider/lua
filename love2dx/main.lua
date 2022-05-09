@@ -1,12 +1,3 @@
-package.path = package.path .. ";../luax/?.lua"
-
-Array = require "array"
-Particle = require "particle"
-Spritesheet = require "spritesheet"
-Animation = require "animation"
-Timer = require "timer"
-Vector = require "vector"
-Colors = require "colors"
 require "love2dx"
 
 function _print(first, second)
@@ -15,19 +6,19 @@ end
 
 function love.load()
   love.mouse.setVisible(false)
-  _G.console = Array:new()
-  _G.particle = Particle(love.graphics.newImage("particle.png"), 16, function (system)
+  _G.console = luax.Array:new()
+  _G.particle = love2dx.Particle(love.graphics.newImage("particle.png"), 16, function (system)
     system:setParticleLifetime(2, 5)
   	system:setEmissionRate(5)
   	system:setSizeVariation(1)
   	system:setLinearAcceleration(-20, -20, 20, 20)
   	system:setColors(1, 1, 1, 1, 1, 1, 1, 0)
   end)
-  _G.spritesheet = Spritesheet(love.graphics.newImage("spritesheet.png"), 16)
-  _G.animation = Animation(_G.spritesheet, 1, -1, function ()
+  _G.spritesheet = love2dx.Spritesheet(love.graphics.newImage("spritesheet.png"), 16)
+  _G.animation = love2dx.Animation(_G.spritesheet, 1, -1, function ()
     -- animation done
   end)
-  _G.timer = Timer()
+  _G.timer = love2dx.Timer()
 end
 
 function love.update(dt)
@@ -37,8 +28,8 @@ function love.update(dt)
   _print("WxH", _G.width .. "x" .. _G.height)
   _print("", "")
   _print("--[[Colors]]--", "")
-  _print("Color.rgb(r,g,b)", Colors.rgb(255 / 2, 255 / 2, 255 / 2))
-  _print("Color.rgba(r,g,b)", Colors.rgba(255 / 2, 255 / 2, 255 / 2, 255 / 2))
+  _print("rgb(r,g,b)", love2dx.rgb(255 / 2, 255 / 2, 255 / 2))
+  _print("rgba(r,g,b)", love2dx.rgba(255 / 2, 255 / 2, 255 / 2, 255 / 2))
   _print("animation:draw(position)", _G.animation.draw)
   _print("", "")
   _print("--[[Particles]]--", "")
@@ -82,7 +73,7 @@ function love.update(dt)
   _print("mouse:sqrt()", mouse:sqrt())
   _print("mouse:normalize()", mouse:normalize())
   _print("mouse:isParallel(vector)", mouse:isParallel(vector))
-  _print("mouse:unpack()", Array:new(mouse:unpack()))
+  _print("mouse:unpack()", luax.Array:new(mouse:unpack()))
   _G.particle:update(dt)
   _G.animation:update(dt)
 end

@@ -1,25 +1,11 @@
-local Colors = {}
-
-function Colors.rgb(r, g, b)
-  assert(type(r) == "number" or type(r) == "nil")
-  assert(type(g) == "number" or type(r) == "nil")
-  assert(type(b) == "number" or type(r) == "nil")
-  r = r or 255
-  g = g or 255
-  b = b or 255
-  return { r = r / 255, g = g / 255, b = b / 255 }
+love2dx.rgba = function(r, g, b, a) -- range: 0-255
+  assert(type(r) == "number")
+  assert(type(g) == "number")
+  assert(type(b) == "number")
+  assert(type(a) == "number")
+  return { r = r / 255, g = g / 255, b = b / 255, a = a  / 255 }
 end
 
-function Colors.rgba(r, g, b, a)
-  assert(type(r) == "number" or type(r) == "nil")
-  assert(type(g) == "number" or type(r) == "nil")
-  assert(type(b) == "number" or type(r) == "nil")
-  assert(type(a) == "number" or type(r) == "nil")
-  r = r or 255
-  g = g or 255
-  b = b or 255
-  a = a or 1
-  return { r = r / 255, g = g / 255, b = b / 255, a = a }
+love2dx.rgb = function(r, g, b)
+  return love2dx.rgba(r, g, b, 255)
 end
-
-return Colors

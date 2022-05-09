@@ -17,7 +17,7 @@ function Base:new(...)
 end
 
 function Base:__tostring()
-  return "base?"
+  return Base.TYPE .. "?"
 end
 
 return Base

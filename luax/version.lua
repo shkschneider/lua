@@ -1,4 +1,4 @@
-local Version = Class:new("version")
+local Version = luax.Class:new("version")
 
 function Version:constructor(major, minor, patch)
   assert(major ~= nil)

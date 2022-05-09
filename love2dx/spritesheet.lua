@@ -1,6 +1,4 @@
-Class = require "class"
-
-local Spritesheet = Class:new("spritesheet")
+local Spritesheet = luax.Class:new("spritesheet")
 
 function Spritesheet:constructor(image, size)
   assert(type(image) ~= nil)
@@ -9,7 +7,7 @@ function Spritesheet:constructor(image, size)
   assert(image:getHeight() % size == 0)
   self.image = image
   self.size = size
-  self.quads = Array:new()
+  self.quads = luax.Array:new()
   for h = 0, self.image:getHeight() - size, size do
     for w = 0, self.image:getWidth() - size, size do
       self.quads:pushlast(

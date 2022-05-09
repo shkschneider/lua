@@ -1,10 +1,10 @@
-local Fifo = Class:new("fifo")
+local Fifo = luax.Class:new("fifo")
 
 function Fifo:constructor(size)
   assert(type(size) == "number")
   self.size = size
   -- TODO love 5.2+: class.__len = function (t) ... end
-  self.array = Array:new()
+  self.array = luax.Array:new()
   return self
 end
 
@@ -16,7 +16,7 @@ function Fifo:push(value)
 end
 
 function Fifo:clear()
-  self.array = Array:new()
+  self.array = luax.Array:new()
 end
 
 return Fifo

@@ -1,6 +1,4 @@
-Class = require "class"
-
-local Particle = Class:new("particle")
+local Particle = luax.Class:new("particle")
 
 function Particle:constructor(image, size, f)
   assert(type(image) ~= nil)

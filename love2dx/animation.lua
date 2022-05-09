@@ -1,6 +1,4 @@
-Class = require "class"
-
-local Animation = Class:new("animation")
+local Animation = luax.Class:new("animation")
 
 function Animation:constructor(spritesheet, duration, ttl, f)
   assert(type(spritesheet.image) ~= nil)

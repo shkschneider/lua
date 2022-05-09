@@ -19,8 +19,6 @@
   - https://github.com/Sheepolution/classroom
 ]]
 
-require "luax"
-
 local TYPE = "class"
 
 local Class = {

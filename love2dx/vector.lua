@@ -1,4 +1,4 @@
-Vector = Class:new("vector")
+Vector = luax.Class:new("vector")
 
 function Vector:constructor(x, y)
   self.x = x or _G.width / 2

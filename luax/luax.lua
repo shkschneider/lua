@@ -1,3 +1,15 @@
+-- namespace
+luax = {}
+luax.Array = require "array"
+luax.Base = require "base"
+luax.Class = require "class"
+luax.Fifo = require "fifo"
+luax.Path = require "path"
+luax.Log = require "log"
+luax.Version = require "version"
+require "random"
+require "utils"
+
 --[[ type() ]]--
 
 local _type = type
@@ -44,64 +56,6 @@ tostring = function (x)
   else
     return _tostring(x)
   end
-end
-
---[[ colors ]]--
-
-function rgb(r, g, b)
-  assert(type(r) == "number" or type(r) == "nil")
-  assert(type(g) == "number" or type(r) == "nil")
-  assert(type(b) == "number" or type(r) == "nil")
-  r = r or 255
-  g = g or 255
-  b = b or 255
-  return { r = r / 255, g = g / 255, b = b / 255 }
-end
-
-function rgba(r, g, b, a)
-  assert(type(r) == "number" or type(r) == "nil")
-  assert(type(g) == "number" or type(r) == "nil")
-  assert(type(b) == "number" or type(r) == "nil")
-  assert(type(a) == "number" or type(r) == "nil")
-  r = r or 255
-  g = g or 255
-  b = b or 255
-  a = a or 1
-  return { r = r / 255, g = g / 255, b = b / 255, a = a }
-end
-
---[[ loop() ]]--
-
-function loop(n, f, ...)
-  assert(type(n) == "number")
-  assert(type(f) == "function")
-  for i = 1, n do
-    f(i, ...)
-  end
-end
-
---[[ lines() ]]--
-
-function lines(s, sep)
-  assert(type(s) == "string")
-  local sep = sep or "\n"
-  local lines = Array:new()
-  for line in s:gmatch("([^\n]*)\n?") do
-    lines:pushlast(line)
-  end
-  return lines
-end
-
---[[ random ]]--
-
-math.randomseed(os.time())
-
-function randomboolean()
-  return randomtable({true, false})
-end
-
-function randomtable(table)
-  return table[math.random(#table)]
 end
 
 --[[ math ]]--

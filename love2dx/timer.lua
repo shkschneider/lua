@@ -3,7 +3,7 @@
   TODO: multiple tasks
 --]]
 
-local Timer = Class:new("timer")
+local Timer = luax.Class:new("timer")
 
 function Timer:constructor()
   self.tick = 0
