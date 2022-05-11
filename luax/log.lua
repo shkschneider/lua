@@ -1,3 +1,11 @@
+--[[
+  LuaX - Simple logger, with Love!
+
+  - opens a file in current directory with its name
+  - prints to console and to file
+  - multiple levels
+--]]
+
 local Log = {}
 
 Log.FILENAME = luax.Path.basename(luax.Path.root or "log") .. ".log"

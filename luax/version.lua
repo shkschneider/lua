@@ -1,3 +1,10 @@
+--[[
+  LuaX - Semantic Versioning with Love!
+
+  Specifications:
+  - https://semver.org
+--]]
+
 local Version = luax.Class:new("version")
 
 function Version:constructor(major, minor, patch)

@@ -1,10 +1,11 @@
 --[[
-  Lua - Simplistic Array, with Love.
-  - __type is "array"
+  LuaX - Simple Array, with Love.
 
-  Greatly inspired from:
+  - type is "array" not "class"
+  - initialize with Array:new()
+
   - https://github.com/rick4stley/array/blob/main/array.lua
-]]
+--]]
 
 local TYPE = "array"
 
@@ -14,7 +15,7 @@ local Array = {
 Array.__index = Array
 
 function Array:new(...)
-  local values = { ... }
+  local values = {...}
   local array = {}
   for _, v in ipairs(values) do
     table.insert(array, v)
@@ -180,6 +181,15 @@ function Array:clear()
   return self:map(function (v)
     return nil
   end)
+end
+
+function Array:join(sep)
+  local separator = tostring(sep or ",")
+  local s = ""
+  for _, v in ipairs(self) do
+    s = s .. separator .. tostring(v)
+  end
+  return s:sub(#separator + 1)
 end
 
 function Array:__tostring()

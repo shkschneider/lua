@@ -1,3 +1,12 @@
+--[[
+  LuaX - First-In First-Out array-like data structure, with Love!
+
+  - type is "class"
+  - has a fixed size
+  - just push() and it pops automatically
+  - you can :clear() anytime
+--]]
+
 local Fifo = luax.Class:new("fifo")
 
 function Fifo:constructor(size)

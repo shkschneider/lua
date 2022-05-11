@@ -1,23 +1,27 @@
 --[[
-  Lua - Simplistic Class, with Love.
-  - yet with inheritence!
-  - __type is "class"
-  - declare with Class:new() or Class:extend()
-  - initialize with Class() which calls Class:constructor()
-  - you can __name them
-  - you can override :constructor() or :tostring()
-  - you can use super
+  LuaX - Simple Class, with Love.
 
-  Greatly inspired from:
+  - type is "class"
+  - declare with Class:new()
+    - inherit from with AnotherClass:extend()
+    - exposes self.super
+  - initialize with MyClass()
+  - with constructors
+    - automatic call to super:constructor(...)
+    - automatic call to MyClass:constructor(...)
+  - named with __name
+  - you can override MyClass:tostring()
+
+  Greatly inspired by:
   - https://github.com/rxi/classic/blob/master/classic.lua
   Also inspired by:
   - https://github.com/jumpsplat120/getClassic/blob/master/Object.lua
   With the help of:
   - http://lua-users.org/wiki/MetatableEvents
 
-  If you need more features:
+  To go further:
   - https://github.com/Sheepolution/classroom
-]]
+--]]
 
 local TYPE = "class"
 
@@ -41,7 +45,7 @@ function Class:new(name)
   -- set (after copy!)
   class.__index = class
   class.__type = TYPE
-  class.__name = name or Class.__type
+  class.__name = name or class.__type
   class.super = nil
   -- return
   return setmetatable(class, self)
@@ -52,18 +56,6 @@ function Class:extend(name)
   class.super = self
   -- TODO love 5.2+: class.__len = function (t) ... end
   return setmetatable(class, self)
-end
-
-function Class:is(t)
-  local meta = getmetatable(self)
-  -- compares metatables
-  while meta do
-    if meta == t then
-      return true
-    end
-    meta = getmetatable(meta)
-  end
-  return false
 end
 
 function Class:tostring()
@@ -90,6 +82,23 @@ function Class:__call(...)
   -- calls your constructor or the dummy one
   class:constructor(...)
   return class
+end
+
+function Class:is(t)
+  local meta = getmetatable(class)
+  -- compares metatables
+  while meta do
+    if meta == t then
+      return true
+    end
+    meta = getmetatable(meta)
+  end
+  return false
+end
+
+function Class.assert(class, name)
+  assert(type(class) == TYPE)
+  assert(class.__name == name)
 end
 
 return Class

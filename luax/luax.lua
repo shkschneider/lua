@@ -1,14 +1,27 @@
+--[[
+  LuaX - A collection of common code for Lua.
+
+  - overrides type() to handle new (internal) types
+  - overrides tostring() to better handle table and new custom data
+
+  - require "luax"
+  - local l = luax.XXX()
+--]]
+
 -- namespace
 luax = {}
 luax.Array = require "array"
-luax.Base = require "base"
+-- Base
 luax.Class = require "class"
+-- Enum
 luax.Fifo = require "fifo"
+luax.Version = require "version"
+require "hash"
+require "random"
+require "strings"
 luax.Path = require "path"
 luax.Log = require "log"
-luax.Version = require "version"
-require "random"
-require "utils"
+require "miscellaneous"
 
 --[[ type() ]]--
 
@@ -17,8 +30,8 @@ local _type = type
 type = function (x)
   if x == nil then
     return "nil"
-  elseif _type(x) == "table" and x.__type ~= nil then
-    return tostring(x.__type)
+  elseif _type(x) == "table" and _type(x.__type) == "string" then
+    return x.__type
   else
     return _type(x)
   end
@@ -60,34 +73,24 @@ end
 
 --[[ math ]]--
 
-local _mathClamp = math.clamp
-
-function math.clamp(x, min, max)
-  if type(_mathClamp) == "function" then
-    return _mathClamp(x, min, max)
-  end
-  assert(type(x) == "number")
+function math.clamp(min, n, max)
   assert(type(min) == "number")
+  assert(type(n) == "number")
   assert(type(max) == "number")
-  if x < min then
+  if n < min then
     return min
-  elseif x > max then
+  elseif n > max then
     return max
   else
-    return x
+    return n
   end
 end
 
-local _mathSign = math.sign
-
-function math.sign(x)
-  if type(_mathSign) == "function" then
-    return _mathSign(x)
-  end
-  assert(type(x) == "number")
-  if x < 0 then
+function math.sign(n)
+  assert(type(n) == "number")
+  if n < 0 then
     return -1
-  elseif x > 0 then
+  elseif n > 0 then
     return 1
   else
     return 0

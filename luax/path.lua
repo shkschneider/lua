@@ -1,11 +1,23 @@
+--[[
+  LuaX - Simple Path related methods, with Love!
+
+  You probably should rather use:
+  - https://keplerproject.github.io/luafilesystem/
+--]]
+
 local Path = {}
 
 function Path.basename(path)
-  return path:gsub("[/\\]*$", ""):match(".*[/\\]([^/\\]*)")
+  local split = Path.split(path, "/")
+  return split[#split]
 end
 
 function Path.dirname(path)
-  return path:gsub("/*$", ""):match("(.*)[/]+[^/]*")
+  if luax.ends(path, "/") then
+    path = path .. "/"
+  end
+  local split = Path.split(path, "/")
+  return split[#split - 1]
 end
 
 function Path.split(path, sep)
@@ -22,8 +34,6 @@ function Path.cwd()
 end
 
 -- this could only work if you call this from main.lua or adjacent file
-Path.root = Path.cwd()
-
--- better then rely on https://keplerproject.github.io/luafilesystem/
+Path.root = Path.cwd() .. "/"
 
 return Path

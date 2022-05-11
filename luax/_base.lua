@@ -1,8 +1,6 @@
 --[[
-  Lua - Simplistic Base not class, with Love.
-  - __type is "base"
-  - initialize with Base:new()
-]]
+  LuaX - Dummy "base" table.
+--]]
 
 local TYPE = "base"
 
