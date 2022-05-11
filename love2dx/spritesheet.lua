@@ -1,12 +1,12 @@
 local Spritesheet = luax.Class:new("spritesheet")
 
-function Spritesheet:constructor(image, size)
-  assert(type(image) ~= nil)
+function Spritesheet:constructor(path, size)
+  assert(type(path) == "string" and #path > 0)
   assert(type(size) == "number" and size > 0)
-  assert(image:getWidth() % size == 0)
-  assert(image:getHeight() % size == 0)
-  self.image = image
+  self.image = love.graphics.newImage(path)
   self.size = size
+  assert(self.image:getWidth() % size == 0)
+  assert(self.image:getHeight() % size == 0)
   self.quads = luax.Array:new()
   for h = 0, self.image:getHeight() - size, size do
     for w = 0, self.image:getWidth() - size, size do

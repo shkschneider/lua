@@ -14,8 +14,12 @@ function Vector:zero()
 end
 
 function Vector:random()
-  local tetha = math.random() * math.pi * 2
-  return Vector(math.cos(tetha), math.sin(tetha))
+  local theta = math.random() * math.pi * 2
+  return Vector(math.cos(theta), math.sin(theta))
+end
+
+function Vector:center()
+  return Vector(_G.width / 2, _G.height / 2)
 end
 
 function Vector:mouse()
@@ -30,12 +34,6 @@ function Vector:heading() -- rad
   return -math.atan2(self.y, self.x)
 end
 
-function Vector:lerp(vector, progress) -- linear interpolation
-  self.x = self.x * (1 - progress) + vector.x * progress
-  self.y = self.y * (1 - progress) + vector.y * progress
-	return self;
-end
-
 function Vector:rotate(theta)
   self.x = self.x * math.cos(theta) - self.y * math.sin(theta)
   self.y = self.x * math.sin(theta) + self.y * math.cos(theta)
@@ -43,18 +41,18 @@ function Vector:rotate(theta)
 end
 
 function Vector:translate(dx, dy)
-  self.x = self.x + dx
-  self.y = self.y + (dy or dx)
+  self.x = self.x + (dx or 0)
+  self.y = self.y + (dy or 0)
   return self
 end
 
 function Vector:distance(vector)
-  return (self - vector):magnitude()
+  return (self:copy() - vector):magnitude()
 end
 
 function Vector:scale(dx, dy)
-  self.x = self.x * dx
-  self.y = self.y * (dy or dx)
+  self.x = self.x * (dx or 1)
+  self.y = self.y * (dy or 1)
   return self
 end
 
@@ -83,34 +81,10 @@ function Vector:isParallel(vector)
 end
 
 function Vector:unpack()
-    return self.x, self.y
+  return self.x, self.y
 end
 
--- maths
-
-function Vector:add(vectorOrNumber)
-  self.x = self.x + (type(vectorOrNumber) == "number" and vectorOrNumber or vectorOrNumber.x)
-  self.y = self.y + (type(vectorOrNumber) == "number" and vectorOrNumber or vectorOrNumber.y)
-  return self
-end
-
-function Vector:subtract(vectorOrNumber)
-  self.x = self.x - (type(vectorOrNumber) == "number" and vectorOrNumber or vectorOrNumber.x)
-  self.y = self.y - (type(vectorOrNumber) == "number" and vectorOrNumber or vectorOrNumber.y)
-  return self
-end
-
-function Vector:multiply(vectorOrNumber)
-  self.x = self.x * (type(vectorOrNumber) == "number" and vectorOrNumber or vectorOrNumber.x)
-  self.y = self.y * (type(vectorOrNumber) == "number" and vectorOrNumber or vectorOrNumber.y)
-  return self
-end
-
-function Vector:divide(vectorOrNumber)
-  self.x = self.x / (type(vectorOrNumber) == "number" and vectorOrNumber or vectorOrNumber.x)
-  self.y = self.y / (type(vectorOrNumber) == "number" and vectorOrNumber or vectorOrNumber.y)
-  return self
-end
+-- operators
 
 Vector.__tostring = function (vector)
    return "(" .. vector.x .. "," .. vector.y .. ")"
@@ -124,20 +98,36 @@ Vector.__eq = function (vector1, vector2)
   return vector1.x == vector2.x and vector1.y == vector2.y
 end
 
+local function _tovector(vectorOrNumber)
+  if type(vectorOrNumber) == "number" then
+    return Vector(vectorOrNumber, vectorOrNumber)
+  else
+    return vectorOrNumber
+  end
+end
+
 Vector.__add = function (vector, vectorOrNumber)
-  return vector:copy():add(vectorOrNumber)
+  vector.x = vector.x + _tovector(vectorOrNumber).x
+  vector.y = vector.y + _tovector(vectorOrNumber).y
+  return vector
 end
 
 Vector.__sub = function (vector, vectorOrNumber)
-  return vector:copy():subtract(vectorOrNumber)
+  vector.x = vector.x - _tovector(vectorOrNumber).x
+  vector.y = vector.y - _tovector(vectorOrNumber).y
+  return vector
 end
 
 Vector.__mul = function (vector, vectorOrNumber)
-  return vector:copy():multiply(vectorOrNumber)
+  vector.x = vector.x * _tovector(vectorOrNumber).x
+  vector.y = vector.y * _tovector(vectorOrNumber).y
+  return vector
 end
 
 Vector.__div = function (vector, vectorOrNumber)
-  return vector:copy():divide(vectorOrNumber)
+  vector.x = vector.x / _tovector(vectorOrNumber).x
+  vector.y = vector.y / _tovector(vectorOrNumber).y
+  return vector
 end
 
 return Vector

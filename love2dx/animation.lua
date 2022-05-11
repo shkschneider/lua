@@ -1,8 +1,7 @@
 local Animation = luax.Class:new("animation")
 
 function Animation:constructor(spritesheet, duration, ttl, f)
-  assert(type(spritesheet.image) ~= nil)
-  assert(type(spritesheet.size) ~= nil)
+  luax.Class.assert(spritesheet, "spritesheet")
   assert(type(duration) == "number" and duration > 0)
   assert(type(ttl) == "number")
   assert(type(f) == nil or type(f) == "function")

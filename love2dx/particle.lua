@@ -16,11 +16,7 @@ function Particle:update(dt)
 end
 
 function Particle:draw(position)
-  love.graphics.draw(
-    self.system,
-    (position and position.x) or (_G.width / 2 - self.size / 2),
-    (position and position.y) or (_G.height / 2 - self.size / 2)
-  )
+  love.graphics.draw(self.system, position.x, position.y)
 end
 
 return Particle

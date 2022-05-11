@@ -4,7 +4,7 @@ Audio._VOLUME = 1.0
 Audio.SOUND = "static"
 Audio.MUSIC = "stream"
 
-function Audio:constructor(path, _type, looping)
+function Audio:constructor(path, _type)
   assert(type(path) == "string" and #path > 0)
   assert(type(_type) == "string" and #_type > 0)
   self.name = luax.Path.basename(path)

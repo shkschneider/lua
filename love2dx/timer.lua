@@ -1,49 +1,56 @@
---[[
-  https://github.com/rxi/coil/blob/master/coil.lua
-  TODO: multiple tasks
---]]
+local Task = luax.Class:new("timer.task")
+
+function Task:constructor(delay, callback)
+  assert(type(delay) == "number" and delay >= 0)
+  assert(type(callback) == "function")
+  self.callback = callback
+  self.tick = 0
+  self.delay = delay
+end
+
+function Task:update(dt)
+  self.tick = self.tick + dt
+  if self.tick >= self.delay then
+    self.callback()
+    self.callback = nil
+  end
+end
 
 local Timer = luax.Class:new("timer")
 
 function Timer:constructor()
-  self.tick = 0
-  self.callback = nil
+  self.tasks = luax.Array:new()
 end
 
-function Timer:after(seconds, f, ...)
-  assert(type(seconds) == "number")
-  assert(type(f) == "function")
-  self.n = seconds
-  self.tick = 0
-  self.callback = function (...)
-    self.clock = nil
-    f(...)
-  end
+function Timer:after(seconds, f)
+  self.tasks:pushlast(Task(seconds, f))
 end
 
-function Timer:every(seconds, f, ...)
-  assert(type(seconds) == "number")
-  assert(type(f) == "function")
-  self.n = seconds
-  self.tick = 0
-  self.callback = function (...)
-    self.clock = os.clock()
-    f(...)
-  end
+function Timer:every(seconds, f)
+  self:after(seconds, function ()
+    f()
+    self:every(seconds, f)
+  end)
 end
 
 function Timer:update(dt)
-  assert(type(dt) == "number")
-  if type(self.callback) ~= "function" then return end
-  self.tick = self.tick + dt
-  if self.tick >= self.n then
-    self.tick = self.tick - self.n
-    self.callback()
-  end
+  self.tasks = self.tasks:filter(function (v)
+    return v.callback ~= nil
+  end)
+  self.tasks:each(function (_, v)
+    v:update(dt)
+  end)
 end
 
-function Timer:cancel()
-  self:constructor()
+function Timer:cancel(f)
+  assert(type(f) == "nil" or type(f) == "function")
+  if f == nil then
+    self.tasks:clear()
+  else
+    self.tasks = self.tasks:filter(function (v)
+      return v.callback ~= f
+    end)
+  end
 end
 
 return Timer
