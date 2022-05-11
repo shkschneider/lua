@@ -18,4 +18,8 @@ function Base:__tostring()
   return Base.TYPE .. "?"
 end
 
-return Base
+return setmetatable(Base, {
+  __call = function (self, ...)
+    return Base:new(...)
+  end
+})

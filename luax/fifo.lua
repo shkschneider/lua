@@ -13,7 +13,7 @@ function Fifo:constructor(size)
   assert(type(size) == "number")
   self.size = size
   -- TODO love 5.2+: class.__len = function (t) ... end
-  self.array = luax.Array:new()
+  self.array = luax.Array()
   return self
 end
 
@@ -25,7 +25,7 @@ function Fifo:push(value)
 end
 
 function Fifo:clear()
-  self.array = luax.Array:new()
+  self.array = luax.Array()
 end
 
 return Fifo

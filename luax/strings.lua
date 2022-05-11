@@ -4,7 +4,7 @@
 
 luax.explode = function (s)
   assert(type(s) == "string")
-  local array = luax.Array:new()
+  local array = luax.Array()
   for i = 1, #s do
     array:pushlast(s:sub(i, i))
   end
@@ -14,7 +14,7 @@ end
 luax.lines = function (s, sep)
   assert(type(s) == "string")
   local sep = sep or "\n"
-  local lines = luax.Array:new()
+  local lines = luax.Array()
   for line in s:gmatch("([^\n]*)\n?") do
     lines:pushlast(line)
   end

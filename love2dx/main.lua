@@ -6,7 +6,7 @@ end
 
 function love.load()
   love.mouse.setVisible(false)
-  _G.console = luax.Array:new()
+  _G.console = luax.Array()
   _G.page = 1
   -- classes
   _G.audio = love2dx.Audio("sound.ogg", love2dx.Audio.SOUND)
@@ -25,7 +25,7 @@ function love.load()
     -- animation done
   end)
   -- gui
-  _G.widgets = luax.Array:new()
+  _G.widgets = luax.Array()
   local size = 48
   local position = Vector(_G.width - size - size, size)
   _G.widgets:pushlast(love2dx.Ui.Text(position.x, position.y, size, size, "Ui.Text"))
@@ -107,7 +107,7 @@ local function _page2()
   _print("mouse:sqrt()", mouse:sqrt())
   _print("mouse:normalize()", mouse:normalize())
   _print("mouse:isParallel(vector)", mouse:isParallel(vector))
-  _print("mouse:unpack()", luax.Array:new(mouse:unpack()))
+  _print("mouse:unpack()", luax.Array(mouse:unpack()))
 end
 
 function love.update(dt)

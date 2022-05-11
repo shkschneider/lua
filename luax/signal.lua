@@ -10,7 +10,7 @@ end
 local Signal = luax.Class:new("signal")
 
 function Signal:constructor()
-  self.listeners = luax.Array:new()
+  self.listeners = luax.Array()
 end
 
 function Signal:register(sig, f)

@@ -11,7 +11,7 @@ luax.loop = function (n, f, ...)
 end
 
 luax.range = function (_start, _end, step)
-  local array = luax.Array:new()
+  local array = luax.Array()
   for i = _start, _end, (step or math.sign(_end - _start)) do
     array:pushlast(i)
   end

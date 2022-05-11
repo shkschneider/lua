@@ -8,8 +8,8 @@ end
 
 print("--[[Array]]--")
 _print("type(Array)", type(luax.Array))
-local array = luax.Array:new(1, 2, 3, 4, 5, 6, 7, 8, 9)
-_print("Array:new()", array)
+local array = luax.Array(1, 2, 3, 4, 5, 6, 7, 8, 9)
+_print("Array()", array)
 _print("Array:pushfirst()", array:copy():pushfirst("0"))
 _print("Array:pushlast()", array:copy():pushlast("10"))
 _print("Array:popfirst()", array:copy():popfirst())

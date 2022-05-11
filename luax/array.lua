@@ -2,7 +2,7 @@
   LuaX - Simple Array, with Love.
 
   - type is "array" not "class"
-  - initialize with Array:new()
+  - initialize with Array()
 
   - https://github.com/rick4stley/array/blob/main/array.lua
 --]]
@@ -200,4 +200,8 @@ function Array:__tostring()
   return "[" .. s:sub(2) .. "]"
 end
 
-return Array
+return setmetatable(Array, {
+  __call = function (self, ...)
+    return Array:new(...)
+  end
+})

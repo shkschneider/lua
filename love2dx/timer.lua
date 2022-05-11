@@ -19,7 +19,7 @@ end
 local Timer = luax.Class:new("timer")
 
 function Timer:constructor()
-  self.tasks = luax.Array:new()
+  self.tasks = luax.Array()
 end
 
 function Timer:after(seconds, f)
@@ -34,11 +34,11 @@ function Timer:every(seconds, f)
 end
 
 function Timer:update(dt)
-  self.tasks = self.tasks:filter(function (v)
-    return v.callback ~= nil
+  self.tasks = self.tasks:filter(function (task)
+    return task.callback ~= nil
   end)
-  self.tasks:each(function (_, v)
-    v:update(dt)
+  self.tasks:each(function (_, task)
+    task:update(dt)
   end)
 end
 
@@ -47,8 +47,8 @@ function Timer:cancel(f)
   if f == nil then
     self.tasks:clear()
   else
-    self.tasks = self.tasks:filter(function (v)
-      return v.callback ~= f
+    self.tasks = self.tasks:filter(function (task)
+      return task.callback ~= f
     end)
   end
 end

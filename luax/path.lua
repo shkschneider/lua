@@ -21,7 +21,7 @@ function Path.dirname(path)
 end
 
 function Path.split(path, sep)
-  local paths = luax.Array:new()
+  local paths = luax.Array()
   for s in string.gmatch(path, "([^" .. (sep or "/") .. "]+)") do
     paths:pushlast(s)
   end

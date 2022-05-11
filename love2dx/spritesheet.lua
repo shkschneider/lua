@@ -7,7 +7,7 @@ function Spritesheet:constructor(path, size)
   self.size = size
   assert(self.image:getWidth() % size == 0)
   assert(self.image:getHeight() % size == 0)
-  self.quads = luax.Array:new()
+  self.quads = luax.Array()
   for h = 0, self.image:getHeight() - size, size do
     for w = 0, self.image:getWidth() - size, size do
       self.quads:pushlast(
