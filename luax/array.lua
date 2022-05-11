@@ -58,7 +58,11 @@ function Array:poplast()
 end
 
 function Array:first()
-  return self[1]
+  if #self > 0 then
+    return self[1]
+  else
+    return nil
+  end
 end
 
 function Array:last()
