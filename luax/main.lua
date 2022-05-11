@@ -104,6 +104,18 @@ _print("Path.dirname(main.lua)", luax.Path.dirname(luax.Path.root .. "/main.lua"
 _print("Path.split(Path.root)", luax.Path.split(luax.Path.root))
 
 print("")
+print("--[[Signal]]--")
+local signal = luax.Signal()
+local callback = function () print("signal received!") end
+_print("signal.register(1,f())", signal:register(1, callback))
+_print("signal.register(2,f())", signal:register(2, callback))
+_print("signal.register(1,f())", signal:register(1, callback))
+_print("signal.send(1)", signal:send(1))
+_print("signal.unregister(1)", signal:unregister(1))
+_print("signal.send(1)", signal:send(1))
+_print("signal.send(2)", signal:send(2))
+
+print("")
 print("--[[String]]--")
 local s = "Lorem ipsum"
 _print("string:", s)
@@ -126,7 +138,7 @@ luax.loop(2, function (i) _print("", i) end)
 _print("math.randomseed", math.randomseed)
 _print("randomboolean()", luax.randomboolean())
 _print("randomtable({1,2,3})", luax.randomtable({1, 2, 3}))
-_print("math.clamp(10,1,9)", math.clamp(10, 1, 9))
+_print("math.clamp(1,9,10)", math.clamp(1, 9,10))
 _print("math.sign(10)", math.sign(-10))
 _print("range(0,-5)", luax.range(0,-5))
 _print("range(1,10,2)", luax.range(1, 10, 2))

@@ -15,6 +15,7 @@ luax.Array = require "array"
 luax.Class = require "class"
 -- Enum
 luax.Fifo = require "fifo"
+luax.Signal = require "signal"
 luax.Version = require "version"
 require "hash"
 require "random"
@@ -73,7 +74,8 @@ end
 
 --[[ math ]]--
 
-function math.clamp(min, n, max)
+math.clamp = function (min, n, max)
+  assert(type(n) == "number")
   assert(type(min) == "number")
   assert(type(n) == "number")
   assert(type(max) == "number")
@@ -86,7 +88,7 @@ function math.clamp(min, n, max)
   end
 end
 
-function math.sign(n)
+math.sign = function (n)
   assert(type(n) == "number")
   if n < 0 then
     return -1
@@ -99,13 +101,7 @@ end
 
 --[[ exit() ]]--
 
-local _exit = exit
-
-function exit(code)
-  if type(_exit) == "function" then
-    _exit(code)
-  end
-  assert(type(x) == "number")
-  assert(x > 0)
+luax.exit = function (code)
+  assert(type(code) == "nil" or (type(code) == "number" and code >= 0))
   os.exit(code)
 end
