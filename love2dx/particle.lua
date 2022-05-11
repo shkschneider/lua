@@ -1,12 +1,13 @@
 local Particle = luax.Class:new("particle")
 
-function Particle:constructor(image, size, f)
-  assert(type(image) ~= nil)
-  assert(type(size) == "number")
+function Particle:constructor(path, f)
+  assert(type(path) == "string" and #path > 0)
   assert(type(f) == "function")
-  self.image = image
-  self.size = size
-  self.system = love.graphics.newParticleSystem(image, size)
+  self.image = love2dx.Cache:image(path)
+  assert(self.image:getDimensions() ~= nil)
+  assert(self.image:getWidth() == self.image:getHeight())
+  self.size = self.image:getWidth()
+  self.system = love.graphics.newParticleSystem(self.image, size)
   f(self.system)
 end
 

@@ -1,4 +1,8 @@
-local Task = luax.Class:new("timer.task")
+--[[
+  Task
+--]]
+
+local Task = luax.Class:new("task")
 
 function Task:constructor(delay, callback)
   assert(type(delay) == "number" and delay >= 0)
@@ -15,6 +19,10 @@ function Task:update(dt)
     self.callback = nil
   end
 end
+
+--[[
+  Timer
+--]]
 
 local Timer = luax.Class:new("timer")
 
@@ -43,10 +51,10 @@ function Timer:update(dt)
 end
 
 function Timer:cancel(f)
-  assert(type(f) == "nil" or type(f) == "function")
   if f == nil then
     self.tasks:clear()
   else
+    assert(type(f) == "function")
     self.tasks = self.tasks:filter(function (task)
       return task.callback ~= f
     end)

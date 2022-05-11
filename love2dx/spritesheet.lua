@@ -3,7 +3,8 @@ local Spritesheet = luax.Class:new("spritesheet")
 function Spritesheet:constructor(path, size)
   assert(type(path) == "string" and #path > 0)
   assert(type(size) == "number" and size > 0)
-  self.image = love.graphics.newImage(path)
+  self.image = love.graphics.newImage(path) -- no cache
+  assert(self.image:getDimensions() ~= nil)
   self.size = size
   assert(self.image:getWidth() % size == 0)
   assert(self.image:getHeight() % size == 0)

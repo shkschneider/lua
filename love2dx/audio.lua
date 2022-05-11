@@ -9,7 +9,12 @@ function Audio:constructor(path, _type)
   assert(type(_type) == "string" and #_type > 0)
   self.name = luax.Path.basename(path)
   self.type = _type
-  self.source = love.audio.newSource(path, _type)
+  if self.type == Audio.SOUND then
+    self.source = love2dx.Cache:sound(path)
+  elseif self.type == Audio.MUSIC then
+    self.source = love2dx.Cache:music(path)
+  end
+  assert(self.source ~= nil)
   self.source:setLooping(self.type == Audio.MUSIC)
 end
 

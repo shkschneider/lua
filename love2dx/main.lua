@@ -10,7 +10,7 @@ function love.load()
   _G.page = 1
   -- classes
   _G.audio = love2dx.Audio("sound.ogg", love2dx.Audio.SOUND)
-  _G.particle = love2dx.Particle(love.graphics.newImage("particle.png"), 16, function (system)
+  _G.particle = love2dx.Particle("particle.png", function (system)
     system:setParticleLifetime(2, 5)
   	system:setEmissionRate(5)
   	system:setSizeVariation(1)

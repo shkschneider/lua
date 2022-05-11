@@ -3,6 +3,7 @@ require "luax"
 
 -- namespace
 love2dx = {}
+love2dx.Cache = require "cache"
 love2dx.Animation = require "animation"
 love2dx.Audio = require "audio"
 love2dx.Particle = require "particle"
