@@ -8,7 +8,7 @@ function love.load()
   love.mouse.setVisible(false)
   _G.console = luax.Array:new()
   _G.page = 1
-  -- ...
+  -- classes
   _G.audio = love2dx.Audio("sound.ogg", love2dx.Audio.SOUND)
   _G.particle = love2dx.Particle(love.graphics.newImage("particle.png"), 16, function (system)
     system:setParticleLifetime(2, 5)
@@ -18,16 +18,30 @@ function love.load()
   	system:setColors(1, 1, 1, 1, 1, 1, 1, 0)
   end)
   _G.sprite = love2dx.Sprite("sprite.png")
+  _G.sprite.position = Vector(_G.width - _G.sprite.width, _G.height - _G.sprite.height)
   _G.spritesheet = love2dx.Spritesheet("spritesheet.png", 16)
+  _G.timer = love2dx.Timer()
   _G.animation = love2dx.Animation(_G.spritesheet, 1, -1, function ()
     -- animation done
   end)
-  _G.timer = love2dx.Timer()
-  -- ...
-  -- _G.audio:play() -- just annoying while developping
+  -- gui
+  _G.widgets = luax.Array:new()
+  local size = 48
+  local position = Vector(_G.width - size - size, size)
+  _G.widgets:pushlast(love2dx.Ui.Text(position.x, position.y, size, size, "Ui.Text"))
+  position:translate(0, size * 2)
+  _G.widgets:pushlast(love2dx.Ui.Button(position.x, position.y, size, size, "Ui.Button", function ()
+    print("button clicked!")
+  end))
+  position:translate(0, size * 2)
+  _G.widgets:pushlast(love2dx.Ui.Checkbox(position.x, position.y, size, size, false, function (isChecked)
+    print("checkbox clicked! " .. tostring(isChecked))
+  end))
+  -- timers
   _G.timer:after(2, function () print("after 2 (once)") end)
   _G.timer:every(1, function () print("every 1") end)
   _G.timer:after(3, function () _G.timer:cancel() end)
+  -- _G.audio:play() -- just annoying while developping
 end
 
 local function _page1()
@@ -105,7 +119,7 @@ function love.update(dt)
     _page1()
     _print("", "")
     _print("", "")
-    _print("Press <space> for next page...", "")
+    _print("Press <space> for next/previous page...", "")
   elseif _G.page == 2 then
     _page2()
   else
@@ -113,20 +127,6 @@ function love.update(dt)
   end
   _G.animation:update(dt)
   _G.particle:update(dt)
-  _G.sprite.position = Vector(_G.width - _G.sprite.width, _G.height - _G.sprite.height)
-  _G.timer:update(dt)
-end
-
-function love.draw()
-  _G.particle:draw(Vector:mouse())
-  _G.sprite:draw()
-  --_G.spritesheet:draw(#_G.spritesheet.quads, Vector(_G.width, _G.height):translate(-_G.spritesheet.size)
-  _G.animation:draw(Vector(0, _G.height - _G.spritesheet.size)) --Vector:mouse():translate(-_G.spritesheet.size / 2))
-  local y = 0
-  _G.console:each(function (i, s)
-    love.graphics.print(s, 0, y)
-    y = y + 16
-  end)
 end
 
 function love.keypressed(key, _, _)
@@ -135,4 +135,35 @@ function love.keypressed(key, _, _)
   elseif key == "escape" then
     love.event.quit(0)
   end
+end
+
+function love.mousepressed(x, y, button, _)
+  if button == 1 then
+    love2dx.Ui.signal("mouse1pressed")
+  elseif button == 2 then
+    love2dx.Ui.signal("mouse2pressed")
+  end
+end
+
+function love.mousereleased(x, y, button, _)
+  if button == 1 then
+    love2dx.Ui.signal("mouse1released")
+  elseif button == 2 then
+    love2dx.Ui.signal("mouse2released")
+  end
+end
+
+function love.draw()
+  _G.particle:draw(Vector:mouse())
+  _G.sprite:draw()
+  --_G.spritesheet:draw(#_G.spritesheet.quads, Vector(_G.width, _G.height):translate(-_G.spritesheet.size)
+  _G.animation:draw(Vector(0, _G.height - _G.spritesheet.size)) --Vector:mouse():translate(-_G.spritesheet.size / 2))
+  local y = 0
+  _G.widgets:each(function (_, widget)
+    widget:draw()
+  end)
+  _G.console:each(function (_, line)
+    love.graphics.print(line, 0, y)
+    y = y + 16
+  end)
 end

@@ -10,6 +10,7 @@ love2dx.Sprite = require "sprite"
 love2dx.Spritesheet = require "spritesheet"
 love2dx.Timer = require "timer"
 love2dx.Vector = require "vector"
+love2dx.Ui = require "ui.ui"
 require "colors"
 
 --[[ init ]]--
