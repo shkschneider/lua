@@ -1,5 +1,7 @@
 Vector = luax.Class:new()
 
+--[[ creation ]]--
+
 function Vector:constructor(x, y)
   self.x = x or _G.width / 2
   self.y = y or _G.height / 2
@@ -14,27 +16,19 @@ function Vector:zero()
 end
 
 function Vector:random()
-  local theta = math.random() * math.pi * 2
-  return Vector(math.cos(theta), math.sin(theta))
-end
-
-function Vector:center()
-  return Vector(_G.width / 2, _G.height / 2)
+  local tetha = math.random() * math.pi * 2
+  return Vector(math.cos(tetha), math.sin(tetha))
 end
 
 function Vector:mouse()
   return Vector(love.mouse.getX(), love.mouse.getY())
 end
 
---[[ computations ]]--
-
-function Vector:dot(vector)
-  return self.x * vector.x + self.y * vector.y
+function Vector:center()
+  return Vector(_G.width / 2, _G.height / 2)
 end
 
-function Vector:heading() -- rad
-  return -math.atan2(self.y, self.x)
-end
+--[[ modification ]]--
 
 function Vector:rotate(theta)
   self.x = self.x * math.cos(theta) - self.y * math.sin(theta)
@@ -43,19 +37,29 @@ function Vector:rotate(theta)
 end
 
 function Vector:translate(dx, dy)
-  self.x = self.x + (dx or 0)
-  self.y = self.y + (dy or 0)
+  self.x = self.x + dx
+  self.y = self.y + (dy or dx)
   return self
-end
-
-function Vector:distance(vector)
-  return (self:copy() - vector):magnitude()
 end
 
 function Vector:scale(dx, dy)
-  self.x = self.x * (dx or 1)
-  self.y = self.y * (dy or 1)
+  self.x = self.x * dx
+  self.y = self.y * (dy or dx)
   return self
+end
+
+--[[ calculation ]]--
+
+function Vector:distance(vector)
+  return (self - vector):magnitude()
+end
+
+function Vector:dot(vector)
+  return self.x * vector.x + self.y * vector.y
+end
+
+function Vector:heading() -- rad
+  return -math.atan2(self.y, self.x)
 end
 
 function Vector:magnitude() -- length
@@ -82,15 +86,7 @@ function Vector:isParallel(vector)
   return math.abs(self:dot(vector)) == 1
 end
 
-function Vector:unpack()
-  return self.x, self.y
-end
-
---[[ operators ]]--
-
-Vector.__tostring = function (vector)
-   return "(" .. vector.x .. "," .. vector.y .. ")"
-end
+--[[ operation ]]--
 
 Vector.__unm = function (vector)
   return Vector(-vector.x, -vector.y)
@@ -100,42 +96,42 @@ Vector.__eq = function (vector1, vector2)
   return vector1.x == vector2.x and vector1.y == vector2.y
 end
 
-local function _tovector(vectorOrNumber)
-  if type(vectorOrNumber) == "number" then
-    return Vector(vectorOrNumber, vectorOrNumber)
-  else
-    return vectorOrNumber
-  end
-end
-
 Vector.__add = function (vector, vectorOrNumber)
-  vector.x = vector.x + _tovector(vectorOrNumber).x
-  vector.y = vector.y + _tovector(vectorOrNumber).y
-  return vector
+  local v = vector:copy()
+  v.x = v.x + (type(vectorOrNumber) == "number" and vectorOrNumber or vectorOrNumber.x)
+  v.y = v.y + (type(vectorOrNumber) == "number" and vectorOrNumber or vectorOrNumber.y)
+  return v
 end
 
 Vector.__sub = function (vector, vectorOrNumber)
-  vector.x = vector.x - _tovector(vectorOrNumber).x
-  vector.y = vector.y - _tovector(vectorOrNumber).y
-  return vector
+  local v = vector:copy()
+  v.x = v.x - (type(vectorOrNumber) == "number" and vectorOrNumber or vectorOrNumber.x)
+  v.y = v.y - (type(vectorOrNumber) == "number" and vectorOrNumber or vectorOrNumber.y)
+  return v
 end
 
 Vector.__mul = function (vector, vectorOrNumber)
-  vector.x = vector.x * _tovector(vectorOrNumber).x
-  vector.y = vector.y * _tovector(vectorOrNumber).y
-  return vector
+  local v = vector:copy()
+  v.x = v.x * (type(vectorOrNumber) == "number" and vectorOrNumber or vectorOrNumber.x)
+  v.y = v.y * (type(vectorOrNumber) == "number" and vectorOrNumber or vectorOrNumber.y)
+  return v
 end
 
 Vector.__div = function (vector, vectorOrNumber)
-  vector.x = vector.x / _tovector(vectorOrNumber).x
-  vector.y = vector.y / _tovector(vectorOrNumber).y
-  return vector
+  local v = vector:copy()
+  v.x = v.x / (type(vectorOrNumber) == "number" and vectorOrNumber or vectorOrNumber.x)
+  v.y = v.y / (type(vectorOrNumber) == "number" and vectorOrNumber or vectorOrNumber.y)
+  return v
 end
 
---[[ tostring() ]]--
+--[[ serialization ]]--
 
-Vector.__tostring = function (self)
-  return "(" .. tostring(self.x) .. "," .. tostring(self.y) .. ")"
+function Vector:unpack()
+    return self.x, self.y
+end
+
+Vector.__tostring = function (vector)
+   return "(" .. vector.x .. "," .. vector.y .. ")"
 end
 
 return Vector

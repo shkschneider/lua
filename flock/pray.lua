@@ -2,7 +2,7 @@
   TODO: should not see behind
 --]]
 
-Pray = Entity:extend("pray")
+Pray = Entity:new()
 
 Pray.MAX_SPEED = 175
 Pray.MIN_SPEED = 100

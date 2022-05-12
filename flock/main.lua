@@ -13,7 +13,7 @@ function love.load()
   _G.height = love.graphics.getHeight()
   _G.isPaused = false
   _G.timeWarp = 1
-  _G.entities = luax.Array:new()
+  _G.entities = luax.Array()
   _G.level = 1
   _G.score = 0
   _G.colors = {
@@ -31,12 +31,12 @@ function love.load()
   _G.assets = {
     f_default = love.graphics.newImageFont("assets/f_default.png", " abcdefghijklmnopqrstuvwxyz" .. "ABCDEFGHIJKLMNOPQRSTUVWXYZ0" .. "123456789.,!?-+/():;%&`'*#=[]\""),
     -- love.mouse.getSystemCursor("arrow")
-    s_pray = love.graphics.newImage("assets/s_pray.png"),
-    s_predator = love.graphics.newImage("assets/s_predator.png"),
-    ss_particles1 = love2dx.Spritesheet(love.graphics.newImage("assets/ss_particles1.png"), 64),
-    ss_particles2 = love2dx.Spritesheet(love.graphics.newImage("assets/ss_particles2.png"), 64),
-    ss_particles3 = love2dx.Spritesheet(love.graphics.newImage("assets/ss_particles3.png"), 64),
-    ss_particles4 = love2dx.Spritesheet(love.graphics.newImage("assets/ss_particles4.png"), 64),
+    s_pray = love.graphics.newImage("assets/s_pray.png"), -- TODO Sprite()
+    s_predator = love.graphics.newImage("assets/s_predator.png"), -- TODO Sprite()
+    ss_particles1 = love2dx.Spritesheet("assets/ss_particles1.png", 64),
+    ss_particles2 = love2dx.Spritesheet("assets/ss_particles2.png", 64),
+    ss_particles3 = love2dx.Spritesheet("assets/ss_particles3.png", 64),
+    ss_particles4 = love2dx.Spritesheet("assets/ss_particles4.png", 64),
     --[[
     s_smoke15 = Spritesheet(love.graphics.newImage("assets/s_smoke15.png"), 32),
     s_smoke30 = Spritesheet(love.graphics.newImage("assets/s_smoke30.png"), 32),

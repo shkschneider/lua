@@ -39,7 +39,7 @@ Class.new = function (self)
       if class.constructor then
         class:constructor(...)
       end
-      class.super = self.super
+      class.super = self
       return setmetatable(class, class)
     end,
     __tostring = function (self)
@@ -51,7 +51,7 @@ end
 Class.constructor = function (self, ...) end
 
 Class.is = function (self, class)
-  return getmetatable(self) == getmetatable(class) or (self.super and self.super:is(class) or false)
+  return type(class) == "class" and (getmetatable(self) == getmetatable(class) or (self.super and self.super:is(class) or false))
 end
 
 Class.__tostring = function (self)

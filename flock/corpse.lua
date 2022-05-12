@@ -1,4 +1,4 @@
-Corpse = Entity:extend("corpse")
+Corpse = Entity:new()
 
 function Corpse:constructor(position)
   self.position = position

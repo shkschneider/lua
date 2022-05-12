@@ -1,4 +1,4 @@
-Entity = luax.Class:new("entity")
+Entity = luax.Class:new()
 
 Entity.SIZE = 32
 Entity.RADIUS = Entity.SIZE / 2 / 2

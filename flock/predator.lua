@@ -2,7 +2,7 @@
   TODO: standing still should lower score
 --]]
 
-Predator = Entity:extend("predator")
+Predator = Entity:new()
 
 Predator.SPEED = 200
 Predator.RANGE = Entity.RADIUS * 2
@@ -12,7 +12,7 @@ Predator.TRAILS = 100
 function Predator:constructor()
   self.position = love2dx.Vector(_G.width / 2, _G.height / 2)
   self.velocity = love2dx.Vector(0, 0)
-  self.positions = luax.Array:new()
+  self.positions = luax.Array()
 end
 
 function Predator:load()
@@ -30,12 +30,10 @@ function Predator:update(dt)
   end
   -- collision
   _G.entities:filter(function (e) return e:is(Pray) end):each(function (_, entity)
-    print(self.position, entity.position, self.position:distance(entity.position))
     if entity ~= self and self.position:distance(entity.position) < Predator.RANGE then
       -- run on target
       self.position = (self.position + entity.position) / 2
       -- effect
-      -- FIXME animation
       _G.entities:pushlast(Effect(entity.position:copy(), luax.randomtable({
         _G.assets.ss_particles1, _G.assets.ss_particles2, _G.assets.ss_particles3, _G.assets.ss_particles4
       })))

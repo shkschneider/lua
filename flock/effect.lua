@@ -1,4 +1,4 @@
-local Effect = Entity:extend("effect")
+local Effect = Entity:new()
 
 function Effect:constructor(position, spritesheet, duration)
   assert(type(position.x) == "number" and type(position.y) == "number")
