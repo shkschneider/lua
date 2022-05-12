@@ -11,7 +11,7 @@ end
 
 -- internal base Widget
 
-Ui._Widget = luax.Class:new("widget")
+Ui._Widget = luax.Class:new()
 
 function Ui._Widget:constructor(x, y, w, h) end
 

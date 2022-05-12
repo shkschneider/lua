@@ -5,7 +5,7 @@
   - https://github.com/klembot/zoetrope/blob/main/zoetrope/core/cached.lua
 --]]
 
-local Cache = luax.Class:new("cache")
+local Cache = luax.Class:new()
 
 Cache._SIZE = 10
 
@@ -16,7 +16,7 @@ function Cache:constructor(size)
 end
 
 local function _get(fifo, id, f)
-  luax.Class.assert(fifo, "fifo")
+  assert(type(fifo) == "class")
   assert(type(id) == "string" and #id > 0)
   assert(type(f) == "function")
   local data = fifo:get(id)

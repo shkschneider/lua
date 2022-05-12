@@ -1,4 +1,4 @@
-local Checkbox = Ui._Widget:extend("ui.checkbox")
+local Checkbox = Ui._Widget:new()
 
 function Checkbox:constructor(x, y, w, h, isChecked, f)
   self.x = x

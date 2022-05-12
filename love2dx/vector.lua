@@ -1,4 +1,4 @@
-Vector = luax.Class:new("vector")
+Vector = luax.Class:new()
 
 function Vector:constructor(x, y)
   self.x = x or _G.width / 2
@@ -25,6 +25,8 @@ end
 function Vector:mouse()
   return Vector(love.mouse.getX(), love.mouse.getY())
 end
+
+--[[ computations ]]--
 
 function Vector:dot(vector)
   return self.x * vector.x + self.y * vector.y
@@ -84,7 +86,7 @@ function Vector:unpack()
   return self.x, self.y
 end
 
--- operators
+--[[ operators ]]--
 
 Vector.__tostring = function (vector)
    return "(" .. vector.x .. "," .. vector.y .. ")"
@@ -128,6 +130,12 @@ Vector.__div = function (vector, vectorOrNumber)
   vector.x = vector.x / _tovector(vectorOrNumber).x
   vector.y = vector.y / _tovector(vectorOrNumber).y
   return vector
+end
+
+--[[ tostring() ]]--
+
+Vector.__tostring = function (self)
+  return "(" .. tostring(self.x) .. "," .. tostring(self.y) .. ")"
 end
 
 return Vector

@@ -1,4 +1,4 @@
-local Particle = luax.Class:new("particle")
+local Particle = luax.Class:new()
 
 function Particle:constructor(path, f)
   assert(type(path) == "string" and #path > 0)

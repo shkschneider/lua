@@ -1,8 +1,9 @@
-local Sprite = luax.Class:new("sprite")
+local Sprite = luax.Class:new()
 
 function Sprite:constructor(path, position)
   assert(type(path) == "string" and #path > 0)
   self.path = path
+  self.name = luax.Path.basename(self.path)
   self.image = love2dx.Cache:image(path)
   assert(self.image:getDimensions() ~= nil)
   self.width = self.image:getWidth()

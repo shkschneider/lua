@@ -1,4 +1,4 @@
-local Audio = luax.Class:new("audio")
+local Audio = luax.Class:new()
 
 Audio._VOLUME = 1.0
 Audio.SOUND = "static"

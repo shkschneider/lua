@@ -1,8 +1,6 @@
---[[
-  Task
---]]
+--[[ Task ]]--
 
-local Task = luax.Class:new("task")
+local Task = luax.Class:new()
 
 function Task:constructor(delay, callback)
   assert(type(delay) == "number" and delay >= 0)
@@ -20,11 +18,9 @@ function Task:update(dt)
   end
 end
 
---[[
-  Timer
---]]
+--[[ Timer ]]--
 
-local Timer = luax.Class:new("timer")
+local Timer = luax.Class:new()
 
 function Timer:constructor()
   self.tasks = luax.Array()

@@ -2,53 +2,54 @@
   LuaX - Extended methods for strings, with Love!
 --]]
 
-luax.explode = function (s)
-  assert(type(s) == "string")
+string.split = function (str, char)
+  assert(type(str) == "string")
+  char = char or " "
+  assert(type(char) == "string" and #char == 1)
   local array = luax.Array()
-  for i = 1, #s do
-    array:pushlast(s:sub(i, i))
+  for s in string.gmatch(str, "([^" .. char .. "]+)") do
+    array:pushlast(s)
   end
   return array
 end
 
-luax.lines = function (s, sep)
-  assert(type(s) == "string")
-  local sep = sep or "\n"
-  local lines = luax.Array()
-  for line in s:gmatch("([^\n]*)\n?") do
-    lines:pushlast(line)
+string.explode = function (str)
+  assert(type(str) == "string")
+  local array = luax.Array()
+  for i = 1, #str do
+    array:pushlast(str:sub(i, i))
   end
-  return lines
+  return array
 end
 
-luax.starts = function (s, match)
-  assert(type(s) == "string")
+string.starts = function (str, match)
+  assert(type(str) == "string")
   assert(type(match) == "string" and #match > 0)
-  return s:sub(1, #match) == match
+  return str:sub(1, #match) == match
 end
 
-luax.ends = function (s, match)
-  assert(type(s) == "string")
+string.ends = function (str, match)
+  assert(type(str) == "string")
   assert(type(match) == "string" and #match > 0)
-  return s:sub(#s - (#match - 1), #s) == match
+  return str:sub(#str - (#match - 1), #str) == match
 end
 
-luax.trim = function (s)
-  return s:gsub(" ", ""):gsub("\t", ""):gsub("\n", "")
+string.trim = function (str)
+  return str:gsub(" ", ""):gsub("\t", ""):gsub("\n", "")
 end
 
-luax.pad = function (s, n, c)
-  assert(type(s) == "string")
+string.pad = function (str, n, char)
+  assert(type(str) == "string")
   assert(type(n) == "number" and n > 0)
-  local char = c or " "
+  char = char or " "
   assert(type(char) == "string" and #char == 1)
-  for i = #s, n do
-    s = char .. s
+  for i = #str, n do
+    str = char .. str
   end
-  return s
+  return str
 end
 
-luax.capitalize = function (s)
+string.capitalize = function (s)
   return s:sub(1, 1):upper() .. s:sub(2, #s):lower()
 end
 

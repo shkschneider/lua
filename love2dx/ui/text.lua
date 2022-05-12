@@ -1,4 +1,4 @@
-local Text = Ui._Widget:extend("ui.text")
+local Text = Ui._Widget:new()
 
 function Text:constructor(x, y, w, h, text)
   self.x = x

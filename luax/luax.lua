@@ -5,7 +5,6 @@
   - overrides tostring() to better handle table and new custom data
 
   - require "luax"
-  - local l = luax.XXX()
 --]]
 
 -- namespace
@@ -31,7 +30,7 @@ local _type = type
 type = function (x)
   if x == nil then
     return "nil"
-  elseif _type(x) == "table" and _type(x.__type) == "string" then
+  elseif _type(x) == "table" and x.__type then
     return x.__type
   else
     return _type(x)
@@ -42,31 +41,33 @@ end
 
 local _tostring = tostring
 
-function _table2string(t)
+local function _table2string(x)
   local s = ""
-  for k, v in pairs(t) do
-    if _tostring(k):find("_") ~= 1 then
-      if type(v) == "function" then
-        s = s .. "," .. k .. "=" .. "function()"
-      elseif type(v) == "array" then
-        s = s .. "," .. _tostring(v)
-      elseif type(v) == "table" then
-        s = s .. "," .. k .. "=" .. _table2string(v)
-      else
-        s = s .. "," .. k .. "=" .. _tostring(v)
-      end
+  for k, v in pairs(x) do
+    if type(v) == "function" then
+      s = s .. "," .. "()"
+    elseif type(v) == "class" then
+      s = s .. "," .. "{}"
+    elseif type(v) == "array" then
+      s = s .. "," .. "[]"
+    else
+      s = s .. "," .. _tostring(k) .. "=" .. tostring(v)
     end
   end
   return "{" .. s:sub(2) .. "}"
 end
 
 tostring = function (x)
-  if x == nil then
-    return "nil"
-  elseif type(x) == "function" then
-    return "function()"
+  if type(x) == "class" then
+    return _tostring(x) or luax.Class.__tostring(x)
+  elseif type(x) == "array" then
+    return luax.Array.__tostring(x)
   elseif type(x) == "table" then
     return _table2string(x)
+  elseif type(x) == "userdata" then
+    return _tostring(x):split(":"):join(" "):split(" "):first() .. "{}"
+  elseif type(x) == "function" then
+    return _tostring(x):split(":"):join(" "):split(" "):first() .. "()"
   else
     return _tostring(x)
   end

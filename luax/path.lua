@@ -8,12 +8,14 @@
 local Path = {}
 
 function Path.basename(path)
+  assert(type(path) == "string")
   local split = Path.split(path, "/")
   return split[#split]
 end
 
 function Path.dirname(path)
-  if luax.ends(path, "/") then
+  assert(type(path) == "string")
+  if path:ends("/") then
     path = path .. "/"
   end
   local split = Path.split(path, "/")
@@ -21,11 +23,8 @@ function Path.dirname(path)
 end
 
 function Path.split(path, sep)
-  local paths = luax.Array()
-  for s in string.gmatch(path, "([^" .. (sep or "/") .. "]+)") do
-    paths:pushlast(s)
-  end
-  return paths
+  assert(type(path) == "string")
+  return path:split(sep or "/")
 end
 
 function Path.cwd()

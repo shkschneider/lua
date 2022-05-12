@@ -1,3 +1,13 @@
+--[[
+  Love2dX - A collection of common code for Love2d.
+
+  - includes LuaX automatically
+  - sets random seed automatically
+  - writes width and height to global _G
+
+  - require "love2dx"
+--]]
+
 package.path = package.path .. ";../luax/?.lua"
 require "luax"
 

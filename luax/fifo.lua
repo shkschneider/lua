@@ -7,7 +7,14 @@
   - you can :clear() anytime
 --]]
 
-local Fifo = luax.Class:new("fifo")
+local Fifo = luax.Class:new()
+
+function Fifo:constructor(size)
+  assert(type(size) == "number" and size > 0)
+  self.size = size
+  -- TODO love 5.2+: class.__len = function (t) ... end
+  self.array = luax.Array()
+end
 
 local function _entry(id, data)
   assert(type(id) == "string")
@@ -15,13 +22,6 @@ local function _entry(id, data)
     id = id,
     data = data,
   }
-end
-
-function Fifo:constructor(size)
-  assert(type(size) == "number" and size > 0)
-  self.size = size
-  -- TODO love 5.2+: class.__len = function (t) ... end
-  self.array = luax.Array()
 end
 
 function Fifo:push(id, data)

@@ -29,7 +29,7 @@ Recommended libraries
 - https://github.com/Sheepolution/batteries (functional, vec2, vec3...)
 - https://github.com/airstruck/knife (base, timer...)
 - https://github.com/rxi/json.lua (json)
-- https://github.com/veethree/spatial
+- https://github.com/veethree/spatial (2d grid system)
 - https://github.com/rxi/lume
 
 love2dx

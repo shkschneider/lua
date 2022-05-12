@@ -1,4 +1,4 @@
-local Spritesheet = luax.Class:new("spritesheet")
+local Spritesheet = luax.Class:new()
 
 function Spritesheet:constructor(path, size)
   assert(type(path) == "string" and #path > 0)

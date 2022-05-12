@@ -1,4 +1,6 @@
-local Listener = luax.Class:new("signal.listener")
+--[[ Listener ]]--
+
+local Listener = luax.Class:new()
 
 function Listener:constructor(sig, callback)
   assert(sig ~= nil)
@@ -6,6 +8,8 @@ function Listener:constructor(sig, callback)
   self.signal = sig
   self.callback = callback
 end
+
+--[[ Signal ]]--
 
 local Signal = luax.Class:new("signal")
 

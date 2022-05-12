@@ -1,4 +1,4 @@
-local Button = Ui._Widget:extend("ui.button")
+local Button = Ui._Widget:new()
 
 function Button:constructor(x, y, w, h, text, f)
   self.x = x
