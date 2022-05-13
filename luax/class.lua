@@ -31,21 +31,8 @@ Class.new = function (self)
   for k, v in pairs(self) do
     class[k] = v
   end
-  class.__index = class
   class.super = self
-  return setmetatable(class, {
-    __call = function (self, ...)
-      local class = self:new()
-      if class.constructor then
-        class:constructor(...)
-      end
-      class.super = self
-      return setmetatable(class, class)
-    end,
-    __tostring = function (self)
-      return self:__tostring() or Class.__tostring(self)
-    end,
-  })
+  return setmetatable(class, class)
 end
 
 Class.constructor = function (self, ...) end
@@ -54,13 +41,23 @@ Class.is = function (self, class)
   return type(class) == "class" and (getmetatable(self) == getmetatable(class) or (self.super and self.super:is(class) or false))
 end
 
+Class.__call = function (self, ...)
+  local class = self:new()
+  if class.constructor then
+    class:constructor(...)
+  end
+  return class
+end
+
 Class.__tostring = function (self)
   local s = ""
   for k, v in pairs(self) do
     k = tostring(k)
     if k:find("_") ~= 1 and not Class[k] then
       if k == "super" then
-        s = s .. "," .. k .. "{...}"
+        if type(v) == "class" and getmetatable(v.super) ~= getmetatable(Class) then
+          s = s .. "," .. k .. "{...}"
+        end
       elseif type(v) == "function" then
         s = s .. "," .. k .. "()"
       elseif type(v) == "class" then
