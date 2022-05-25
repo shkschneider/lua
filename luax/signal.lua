@@ -27,6 +27,7 @@ function Signal:send(sig)
   local listeners = self.listeners:filter(function (listener)
     return listener.signal == sig
   end)
+  luax.Log.verbose("Signal.send:" .. tostring(sig))
   listeners:each(function (_, listener)
     listener.callback(sig)
   end)

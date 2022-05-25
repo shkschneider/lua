@@ -1,27 +1,193 @@
 require "luax"
-require "_base"
 require "_enum"
 
 local function _print(first, second)
   print(tostring(first) .. "\t" .. tostring(second))
 end
 
+local function try(s, f)
+  _print(s, f())
+end
+
+print("--[[Class]]--")
+
+_print("Class", "Base")
+try("type(Class)", function ()
+  assert(type(Class) == "class")
+  return type(Class)
+end)
+try("Class.super", function ()
+  assert(Class.super == nil)
+  return Class.super
+end)
+try("Class.constructor", function ()
+  assert(Class.constructor ~= nil)
+  return Class.constructor
+end)
+
+_print("Class", "Inheritance")
+-- Classes
+FirstClass = luax.Class:new()
+try("FirstClass=luax.Class:new()", function ()
+  assert(FirstClass.__type == "class")
+  assert(FirstClass.super == Class)
+  return FirstClass
+end)
+function FirstClass:constructor()
+  self.n = 1
+end
+try("FirstClass.constructor", function ()
+  assert(FirstClass.constructor ~= nil)
+  return FirstClass.constructor
+end)
+firstClass = FirstClass()
+try("firstClass=FirstClass()", function ()
+  assert(firstClass.__type == "class")
+  assert(firstClass.super == Class)
+  assert(firstClass.n == 1)
+  return firstClass
+end)
+SecondClass = FirstClass:new()
+try("SecondClass=FirstClass:new()", function ()
+  assert(type(SecondClass) == "class")
+  assert(SecondClass.super == FirstClass)
+  return SecondClass
+end)
+secondClass = SecondClass()
+try("secondClass=SecondClass()", function ()
+  assert(type(secondClass) == "class")
+  assert(secondClass.super == FirstClass)
+  assert(secondClass.n == 1)
+  return secondClass
+end)
+function SecondClass:constructor()
+  self.n = self.n + 1
+end
+try("SecondClass.constructor()", function ()
+  assert(SecondClass.constructor ~= FirstClass.constructor)
+  return secondClass.constructor
+end)
+secondClass = SecondClass()
+try("secondClass=SecondClass()", function ()
+  assert(secondClass.n == 2)
+  return secondClass
+end)
+-- Animals
+Animal = luax.Class:new()
+try("Animal=luax.Class:new()", function ()
+  return Animal
+end)
+function Animal:constructor(name)
+  self.planet = "earth"
+  self.name = name
+end
+Dog = Animal:new()
+try("Dog=Animal:new()", function ()
+  assert(Dog.super == Animal)
+  return Dog
+end)
+Cat = Animal:new()
+try("Cat=Animal:new()", function ()
+  assert(Cat.super == Animal)
+  return Cat
+end)
+Lynx = Cat:new()
+try("Lynx=Cat:new()", function ()
+  assert(Lynx.super == Cat)
+  return Lynx
+end)
+Alien = Animal:new()
+function Alien:constructor()
+  self.planet = "pluto"
+end
+try("Alien=Animal:new()", function ()
+  return Alien
+end)
+myDog = Dog("myDog")
+anyDog = Dog("anyDog")
+anyCat = Cat("anyCat")
+wildLynx = Lynx("wildLynx")
+alien = Alien()
+try("myDog.name", function ()
+  assert(myDog.name == "myDog")
+  return myDog.name
+end)
+try("anyDog.planet", function ()
+  assert(anyDog.planet == "earth")
+  return anyDog.planet
+end)
+try("alien.name", function ()
+  assert(alien.name == nil)
+  return alien.name
+end)
+try("alien.planet", function ()
+  assert(alien.planet ~= "earth")
+  return alien.planet
+end)
+try("Cat:is(Animal)", function ()
+  assert(Cat:is(Animal) == true)
+  return Cat:is(Animal)
+end)
+try("Cat:is(Cat)", function ()
+  assert(Cat:is(Cat) == true)
+  return Cat:is(Cat)
+end)
+--[[ FIXME
+try("anyCat:is(Cat)", function ()
+  assert(anyCat:is(Cat) == true)
+  return anyCat:is(Cat)
+end)
+--]]
+try("Lynx:is(Cat)", function ()
+  assert(Lynx:is(Cat) == true)
+  return Lynx:is(Cat)
+end)
+try("Cat:is(Lynx)", function ()
+  assert(Cat:is(Lynx) == false)
+  return Cat:is(Lynx)
+end)
+try("Lynx:is(Animal)", function ()
+  assert(Lynx:is(Animal) == true)
+  return Lynx:is(Animal)
+end)
+try("Alien:is(Animal)", function ()
+  assert(Alien:is(Animal) == true)
+  return Alien:is(Animal)
+end)
+try("Alien:is(Dog)", function ()
+  assert(Alien:is(Dog) == false)
+  return Alien:is(Dog)
+end)
+
+print("")
 print("--[[Array]]--")
 _print("type(Array)", type(luax.Array))
 local array = luax.Array(1, 2, 3, 4, 5, 6, 7, 8, 9)
 _print("Array()", array)
-_print("Array:pushfirst()", array:copy():pushfirst("0"))
-_print("Array:pushlast()", array:copy():pushlast("10"))
-_print("Array:popfirst()", array:copy():popfirst())
-_print("Array:poplast()", array:copy():poplast())
+assert(#array == 9)
+_print("Array:pushfirst()", array:pushfirst("0"))
+assert(#array == 10)
+_print("Array:pushlast()", array:pushlast("10"))
+assert(#array == 11)
+_print("Array:popfirst()", array:popfirst())
+assert(#array == 10)
+_print("Array:poplast()", array:poplast())
+assert(#array == 9)
 _print("Array:first()", array:first())
+assert(array:first() == 1)
 _print("Array:last()", array:last())
+assert(array:last() == 9)
 _print("Array:each()", array:each(function (v) return v end))
 _print("Array:all(<10)", array:all(function (v) return v < 10 end))
+assert(array:all(function (v) return v < 10 end) == true)
 _print("Array:count(<10)", array:count(function (v) return v < 10 end))
+assert(array:count(function (v) return v < 10 end) == 9)
 _print("Array:any(<10)", array:any(function (v) return v < 10 end))
+assert(array:any(function (v) return v < 10 end) == true)
 _print("Array:none(<10)", array:none(function (v) return v < 10 end))
+assert(array:none(function (v) return v < 10 end) == false)
 _print("Array:contains(10)", array:contains(10))
+assert(array:contains(10) == false)
 _print("Array:map('_' + v)", array:copy():map(function (v) return "_" .. v end))
 _print("Array:filter(v%2==0)", array:filter(function (v) return tonumber(v) % 2 == 0 end))
 _print("Array:split(5)", array:split(5))
@@ -37,30 +203,6 @@ _print("type(Enum)", type(Enum))
 _print("Enum.ONE", Enum.ONE)
 _print("Enum.TWO", Enum.TWO)
 _print("Enum.THREE", Enum.THREE)
-
-print("")
-print("--[[Class]]--")
-_print("type(Class)", type(luax.Class))
-_print("Class.super", Class.super)
-_print("Class:constructor(...)", function (...) end)
-local Animal = luax.Class:new()
-function Animal:constructor(planet)
-  self.planet = planet or "earth"
-end
-local animal = Animal()
-_print("Animal=Class:new()", animal)
-local Dog = Animal:new()
-_print("Dog=Animal:new()", "")
-local anyDog = Dog()
-_print("anyDog=Dog()", anyDog)
-local myDog = Dog()
-_print("myDog=Dog()", myDog)
-_print("myDog.super", myDog.super)
-local alien = Animal("pluto")
-_print("alien=Alien('pluto')", alien)
-_print("myDog:is(Alien)", myDog:is(Alien))
-_print("alien:is(Animal)", alien:is(Animal))
-_print("alien.planet", alien.planet)
 
 print("")
 print("--[[Fifo]]--")
@@ -156,3 +298,6 @@ _print("newVersion<oldVersion", newVersion < oldVersion)
 _print("newVersion>oldVersion", newVersion > oldVersion)
 _print("oldVersion==newVersion", oldVersion == newVersion)
 _print("newVersion==newVersion", newVersion == newVersion)
+
+print("")
+print("OK")

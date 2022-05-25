@@ -6,9 +6,7 @@
     - inherit from with AnotherClass:new()
     - exposes self.super
   - initialize with MyClass()
-  - with constructors
-    - automatic call to super:constructor(...)
-    - automatic call to MyClass:constructor(...)
+  - with constructors (automatically called upon instanciation)
 
   Greatly inspired by:
   - https://github.com/rxi/classic/blob/master/classic.lua
@@ -26,7 +24,7 @@ Class = {
   super = nil,
 }
 
-Class.new = function (self)
+Class.new = function (self, ...)
   local class = {}
   for k, v in pairs(self) do
     class[k] = v
@@ -37,15 +35,17 @@ end
 
 Class.constructor = function (self, ...) end
 
-Class.is = function (self, class)
-  return type(class) == "class" and (getmetatable(self) == getmetatable(class) or (self.super and self.super:is(class) or false))
+-- FIXME does work for MyClass:is(Myclass) but not for myClass:is(MyClass)
+Class.is = function (self, other)
+  assert(type(other) == Class.__type)
+  return getmetatable(self) == getmetatable(other) or (self.super and self.super:is(other) or false)
 end
 
 Class.__call = function (self, ...)
-  local class = self:new()
-  if class.constructor then
-    class:constructor(...)
-  end
+  local class = self:new(...)
+  self.super.constructor(class, ...)
+  self.constructor(class, ...)
+  class.super = self.super
   return class
 end
 
@@ -55,15 +55,15 @@ Class.__tostring = function (self)
     k = tostring(k)
     if k:find("_") ~= 1 and not Class[k] then
       if k == "super" then
-        if type(v) == "class" and getmetatable(v.super) ~= getmetatable(Class) then
-          s = s .. "," .. k .. "{...}"
+        if type(v) == "class" and getmetatable(v) ~= getmetatable(Class) then
+          s = s .. "," .. k .. "{}"
         end
       elseif type(v) == "function" then
         s = s .. "," .. k .. "()"
       elseif type(v) == "class" then
-        s = s .. "," .. k .. "{...}"
+        s = s .. "," .. k .. "{}"
       elseif type(v) == "array" then
-        s = s .. "," .. k .. "[...]"
+        s = s .. "," .. k .. "[]"
       else
         s = s .. "," .. k .. "=" .. tostring(v)
       end
