@@ -7,6 +7,10 @@ Effect = require "effect"
 local Game = {}
 
 function Game.predator()
+  print("Game.predator")
+  print(_G.entities)
+  print(_G.entities:filter(function (e) return e:is(Predator) end))
+  print(_G.entities:filter(function (e) return e:is(Pray) end))
   return _G.entities:filter(function (e) return e:is(Predator) end):first()
 end
 

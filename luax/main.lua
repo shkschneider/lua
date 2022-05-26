@@ -132,12 +132,10 @@ try("Cat:is(Cat)", function ()
   assert(Cat:is(Cat) == true)
   return Cat:is(Cat)
 end)
---[[ FIXME
 try("anyCat:is(Cat)", function ()
   assert(anyCat:is(Cat) == true)
   return anyCat:is(Cat)
 end)
---]]
 try("Lynx:is(Cat)", function ()
   assert(Lynx:is(Cat) == true)
   return Lynx:is(Cat)
